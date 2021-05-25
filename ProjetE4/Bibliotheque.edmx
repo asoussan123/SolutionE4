@@ -1,0 +1,342 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="xambibliothequeModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="genrelivre">
+          <Key>
+            <PropertyRef Name="idGenre" />
+          </Key>
+          <Property Name="idGenre" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="libelleGenre" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="livre">
+          <Key>
+            <PropertyRef Name="idLivre" />
+          </Key>
+          <Property Name="idLivre" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="titre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="auteur" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="genre" Type="int" Nullable="false" />
+          <Property Name="theme" Type="int" Nullable="false" />
+          <Property Name="image" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="quantite" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="reserver">
+          <Key>
+            <PropertyRef Name="idLivre" />
+            <PropertyRef Name="idUtilisateur" />
+          </Key>
+          <Property Name="idLivre" Type="int" Nullable="false" />
+          <Property Name="idUtilisateur" Type="int" Nullable="false" />
+          <Property Name="dateReserve" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" />
+          <Property Name="dateRemise" Type="datetime" Precision="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="themelivre">
+          <Key>
+            <PropertyRef Name="idTheme" />
+          </Key>
+          <Property Name="idTheme" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="libelleTheme" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="utilisateur">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="login" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="mdp" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="adresse" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="statut" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <Association Name="livre_ibfk_1">
+          <End Role="themelivre" Type="Self.themelivre" Multiplicity="1" />
+          <End Role="livre" Type="Self.livre" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="themelivre">
+              <PropertyRef Name="idTheme" />
+            </Principal>
+            <Dependent Role="livre">
+              <PropertyRef Name="theme" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="livre_ibfk_2">
+          <End Role="genrelivre" Type="Self.genrelivre" Multiplicity="1" />
+          <End Role="livre" Type="Self.livre" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="genrelivre">
+              <PropertyRef Name="idGenre" />
+            </Principal>
+            <Dependent Role="livre">
+              <PropertyRef Name="genre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="reserver_ibfk_1">
+          <End Role="utilisateur" Type="Self.utilisateur" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="reserver" Type="Self.reserver" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="utilisateur">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="reserver">
+              <PropertyRef Name="idUtilisateur" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="reserver_ibfk_2">
+          <End Role="livre" Type="Self.livre" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="reserver" Type="Self.reserver" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="livre">
+              <PropertyRef Name="idLivre" />
+            </Principal>
+            <Dependent Role="reserver">
+              <PropertyRef Name="idLivre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="xambibliothequeModelStoreContainer">
+          <EntitySet Name="genrelivre" EntityType="Self.genrelivre" Schema="xambibliotheque" store:Type="Tables" />
+          <EntitySet Name="livre" EntityType="Self.livre" Schema="xambibliotheque" store:Type="Tables" />
+          <EntitySet Name="reserver" EntityType="Self.reserver" Schema="xambibliotheque" store:Type="Tables" />
+          <EntitySet Name="themelivre" EntityType="Self.themelivre" Schema="xambibliotheque" store:Type="Tables" />
+          <EntitySet Name="utilisateur" EntityType="Self.utilisateur" Schema="xambibliotheque" store:Type="Tables" />
+          <AssociationSet Name="livre_ibfk_1" Association="Self.livre_ibfk_1">
+            <End Role="themelivre" EntitySet="themelivre" />
+            <End Role="livre" EntitySet="livre" />
+          </AssociationSet>
+          <AssociationSet Name="livre_ibfk_2" Association="Self.livre_ibfk_2">
+            <End Role="genrelivre" EntitySet="genrelivre" />
+            <End Role="livre" EntitySet="livre" />
+          </AssociationSet>
+          <AssociationSet Name="reserver_ibfk_1" Association="Self.reserver_ibfk_1">
+            <End Role="utilisateur" EntitySet="utilisateur" />
+            <End Role="reserver" EntitySet="reserver" />
+          </AssociationSet>
+          <AssociationSet Name="reserver_ibfk_2" Association="Self.reserver_ibfk_2">
+            <End Role="livre" EntitySet="livre" />
+            <End Role="reserver" EntitySet="reserver" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="xambibliothequeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="genrelivre">
+          <Key>
+            <PropertyRef Name="idGenre" />
+          </Key>
+          <Property Name="idGenre" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="libelleGenre" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="livre" Relationship="Self.livre_ibfk_2" FromRole="genrelivre" ToRole="livre" />
+        </EntityType>
+        <EntityType Name="livre">
+          <Key>
+            <PropertyRef Name="idLivre" />
+          </Key>
+          <Property Name="idLivre" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="titre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="auteur" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="genre" Type="Int32" Nullable="false" />
+          <Property Name="theme" Type="Int32" Nullable="false" />
+          <Property Name="image" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="quantite" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="genrelivre" Relationship="Self.livre_ibfk_2" FromRole="livre" ToRole="genrelivre" />
+          <NavigationProperty Name="themelivre" Relationship="Self.livre_ibfk_1" FromRole="livre" ToRole="themelivre" />
+          <NavigationProperty Name="reserver" Relationship="Self.reserver_ibfk_2" FromRole="livre" ToRole="reserver" />
+        </EntityType>
+        <EntityType Name="reserver">
+          <Key>
+            <PropertyRef Name="idLivre" />
+            <PropertyRef Name="idUtilisateur" />
+          </Key>
+          <Property Name="idLivre" Type="Int32" Nullable="false" />
+          <Property Name="idUtilisateur" Type="Int32" Nullable="false" />
+          <Property Name="dateReserve" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="dateRemise" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="livre" Relationship="Self.reserver_ibfk_2" FromRole="reserver" ToRole="livre" />
+          <NavigationProperty Name="utilisateur" Relationship="Self.reserver_ibfk_1" FromRole="reserver" ToRole="utilisateur" />
+        </EntityType>
+        <EntityType Name="themelivre">
+          <Key>
+            <PropertyRef Name="idTheme" />
+          </Key>
+          <Property Name="idTheme" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="libelleTheme" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="livre" Relationship="Self.livre_ibfk_1" FromRole="themelivre" ToRole="livre" />
+        </EntityType>
+        <EntityType Name="utilisateur">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="login" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="mdp" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="adresse" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="statut" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="reserver" Relationship="Self.reserver_ibfk_1" FromRole="utilisateur" ToRole="reserver" />
+        </EntityType>
+        <Association Name="livre_ibfk_2">
+          <End Role="genrelivre" Type="Self.genrelivre" Multiplicity="1" />
+          <End Role="livre" Type="Self.livre" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="genrelivre">
+              <PropertyRef Name="idGenre" />
+            </Principal>
+            <Dependent Role="livre">
+              <PropertyRef Name="genre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="livre_ibfk_1">
+          <End Role="themelivre" Type="Self.themelivre" Multiplicity="1" />
+          <End Role="livre" Type="Self.livre" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="themelivre">
+              <PropertyRef Name="idTheme" />
+            </Principal>
+            <Dependent Role="livre">
+              <PropertyRef Name="theme" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="reserver_ibfk_2">
+          <End Role="livre" Type="Self.livre" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="reserver" Type="Self.reserver" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="livre">
+              <PropertyRef Name="idLivre" />
+            </Principal>
+            <Dependent Role="reserver">
+              <PropertyRef Name="idLivre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="reserver_ibfk_1">
+          <End Role="utilisateur" Type="Self.utilisateur" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="reserver" Type="Self.reserver" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="utilisateur">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="reserver">
+              <PropertyRef Name="idUtilisateur" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="xambibliothequeEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="genrelivre" EntityType="Self.genrelivre" />
+          <EntitySet Name="livre" EntityType="Self.livre" />
+          <EntitySet Name="reserver" EntityType="Self.reserver" />
+          <EntitySet Name="themelivre" EntityType="Self.themelivre" />
+          <EntitySet Name="utilisateur" EntityType="Self.utilisateur" />
+          <AssociationSet Name="livre_ibfk_2" Association="Self.livre_ibfk_2">
+            <End Role="genrelivre" EntitySet="genrelivre" />
+            <End Role="livre" EntitySet="livre" />
+          </AssociationSet>
+          <AssociationSet Name="livre_ibfk_1" Association="Self.livre_ibfk_1">
+            <End Role="themelivre" EntitySet="themelivre" />
+            <End Role="livre" EntitySet="livre" />
+          </AssociationSet>
+          <AssociationSet Name="reserver_ibfk_2" Association="Self.reserver_ibfk_2">
+            <End Role="livre" EntitySet="livre" />
+            <End Role="reserver" EntitySet="reserver" />
+          </AssociationSet>
+          <AssociationSet Name="reserver_ibfk_1" Association="Self.reserver_ibfk_1">
+            <End Role="utilisateur" EntitySet="utilisateur" />
+            <End Role="reserver" EntitySet="reserver" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="xambibliothequeModelStoreContainer" CdmEntityContainer="xambibliothequeEntities">
+          <EntitySetMapping Name="genrelivre">
+            <EntityTypeMapping TypeName="xambibliothequeModel.genrelivre">
+              <MappingFragment StoreEntitySet="genrelivre">
+                <ScalarProperty Name="idGenre" ColumnName="idGenre" />
+                <ScalarProperty Name="libelleGenre" ColumnName="libelleGenre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="livre">
+            <EntityTypeMapping TypeName="xambibliothequeModel.livre">
+              <MappingFragment StoreEntitySet="livre">
+                <ScalarProperty Name="idLivre" ColumnName="idLivre" />
+                <ScalarProperty Name="titre" ColumnName="titre" />
+                <ScalarProperty Name="auteur" ColumnName="auteur" />
+                <ScalarProperty Name="genre" ColumnName="genre" />
+                <ScalarProperty Name="theme" ColumnName="theme" />
+                <ScalarProperty Name="image" ColumnName="image" />
+                <ScalarProperty Name="quantite" ColumnName="quantite" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="reserver">
+            <EntityTypeMapping TypeName="xambibliothequeModel.reserver">
+              <MappingFragment StoreEntitySet="reserver">
+                <ScalarProperty Name="idLivre" ColumnName="idLivre" />
+                <ScalarProperty Name="idUtilisateur" ColumnName="idUtilisateur" />
+                <ScalarProperty Name="dateReserve" ColumnName="dateReserve" />
+                <ScalarProperty Name="dateRemise" ColumnName="dateRemise" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="themelivre">
+            <EntityTypeMapping TypeName="xambibliothequeModel.themelivre">
+              <MappingFragment StoreEntitySet="themelivre">
+                <ScalarProperty Name="idTheme" ColumnName="idTheme" />
+                <ScalarProperty Name="libelleTheme" ColumnName="libelleTheme" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="utilisateur">
+            <EntityTypeMapping TypeName="xambibliothequeModel.utilisateur">
+              <MappingFragment StoreEntitySet="utilisateur">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="login" ColumnName="login" />
+                <ScalarProperty Name="mdp" ColumnName="mdp" />
+                <ScalarProperty Name="adresse" ColumnName="adresse" />
+                <ScalarProperty Name="statut" ColumnName="statut" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Aucun" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

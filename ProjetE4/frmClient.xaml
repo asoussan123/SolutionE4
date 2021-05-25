@@ -1,0 +1,35 @@
+﻿<Window x:Class="ProjetE4.frmClient"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProjetE4"
+        mc:Ignorable="d"
+         Title="frmClient" Height="450" Width="800" Loaded="Window_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="250"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock Name="txtBonjour" Grid.Row="0" HorizontalAlignment="Center" FontSize="30"  ></TextBlock>
+        <Button Name="btnProfil" Content="Mon profil" Grid.Row="0" HorizontalAlignment="Right" Width="100" Height="50" Click="btnProfil_Click"></Button>
+        <TextBlock Text="Liste des livres disponibles" Grid.Row="1" VerticalAlignment="Bottom" FontSize="25" HorizontalAlignment="Left"></TextBlock>
+        <ListBox Name="lstLivres"  BorderBrush="{x:Null}" Grid.Row="2">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding titre}" Width="100"></TextBlock>
+                        <TextBlock Text="{Binding auteur}" Width="200"></TextBlock>
+                        <Line Width="10"></Line>
+                        <Image Source="{Binding image}" Width="100" Height="80"></Image>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Button Name="btnReserver" Content="Reserver" Grid.Row="3" HorizontalAlignment="Center" Width="100" Height="50" Click="btnReserver_Click"></Button>
+        <Button Name="btnDetail" Content="Détails du livre" Grid.Row="3" HorizontalAlignment="Right" Width="100" Height="50" Click="btnDetail_Click"></Button>
+        <Button Name="btnDeco" Click="btnDeco_Click" Content="Se deconnecter" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="20" Grid.Row="3"></Button>
+    </Grid>
+</Window>

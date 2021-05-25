@@ -1,0 +1,42 @@
+﻿<Window x:Class="ProjetE4.frmProfil"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProjetE4"
+        mc:Ignorable="d"
+         Title="frmProfil" Height="550" Width="800" Loaded="Window_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="250"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock Name="txtBonjour" Grid.Row="0" HorizontalAlignment="Center" FontSize="30"  ></TextBlock>
+        <Button Name="btnProfil" Content="Quitter le profil" Grid.Row="0" HorizontalAlignment="Right" Width="100" Height="50" Click="btnProfil_Click"></Button>
+        <TextBlock Text="Vos réservations" Grid.Row="1" VerticalAlignment="Bottom" FontSize="25"></TextBlock>
+        <ListBox Name="lstReservations"  BorderBrush="{x:Null}" Grid.Row="2" SelectionChanged="lstReservations_SelectionChanged">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding livre.titre}" Width="100"></TextBlock>
+                        <Line Width="10"></Line>
+                        <Image Source="{Binding livre.image}" Width="100" Height="80"></Image>
+                        <TextBlock Text="{Binding dateReserve}" Width="200"></TextBlock>
+                        <TextBlock Text="{Binding dateRemise}" Width="200"></TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="500"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Image Name="imgAction" Grid.Column="1" Width="150" Height="150"></Image>
+        </Grid>
+        <Button Name="btnRemettre" Content="Remettre" Grid.Row="3" HorizontalAlignment="Center" Width="100" Height="50" Click="btnRemettre_Click"></Button>
+
+    </Grid>
+</Window>
